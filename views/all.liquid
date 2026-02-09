@@ -26,12 +26,14 @@
     <!-- Individual student card --> 
     <li>
       <figure>
-          <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}?width=400"  width="400" height="300" alt="mugshot">
-          {% if person.is_bold %}
-          <p>
-            Kaal
-          </p>
-          {% endif %}
+
+        <img src="https://fdnd.directus.app/assets/{{ person.mugshot.id }}" alt="">
+
+        {% if person.is_bold %}
+        <p>
+        Kaal
+        </p>
+        {% endif %}
       </figure>
       <article>
         <div>
