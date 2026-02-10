@@ -7,21 +7,7 @@
   <ul>
 
     <!-- Liquid for loop for each person in the database -->
-
     {% for person in persons %}
-
-    <!-- Calculate age with liquid -->
-    {% assign dob = person.birthdate | date: "%Y-%m-%d" %}
-    {% assign current_year = "now" | date: "%Y" %}
-    {% assign birth_year = dob | date: "%Y" %}
-    {% assign age = current_year | minus: birth_year %}
-    {% assign now_month_day = "now" | date: "%m%d" | plus: 0 %}
-    {% assign dob_month_day = dob | date: "%m%d" | plus: 0 %}
-
-    <!-- Check for examptions in calculation -->
-    {% if now_month_day < dob_month_day %}
-      {% assign age = age | minus: 1 %}
-    {% endif %}
 
     <!-- Individual student card --> 
     <li>
@@ -37,6 +23,7 @@
       </figure>
       <article>
         <div class="badges">
+          {% include 'partials/calc_age.liquid' %}
           {% if age %}
           <p class="age">{{ age | strip_html }}</p>
           {% endif %}
@@ -52,6 +39,7 @@
         <a href="/student/{{ person.id }}">Meer over {{ person.name }}</a>
       </article>
     </li>
+
     {% endfor %}
   </ul>
 
