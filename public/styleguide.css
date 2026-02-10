@@ -16,6 +16,8 @@
 }
 
 body {
+
+    /* kleuren van fdnd */
     --primary-fdnd: #66E5BF;
     --badges: #FFFC86;
     --secondary: #A675F5;
@@ -52,6 +54,46 @@ img, video {
 	height: auto;
 }
 
+/* badges for all pages */
+div.badges {
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .5rem;
+    margin: .5rem 0;
+
+    p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        background-color: var(--badges);
+        width: fit-content;
+        padding: .3rem .8rem;
+        height: 1.7rem;
+        border-radius: 1rem;
+
+
+        &:nth-of-type(1) {
+            width: 3rem;
+        }
+
+        &:nth-of-type(2) {
+
+        }
+
+        &:nth-of-type(3) {
+            display: none;
+
+            @media (min-width: 1000px) {
+                display: flex;
+            }
+        }
+    }
+}
+
+/* card design universial */
 section.cardlayout {
 
     ul {
@@ -67,7 +109,7 @@ section.cardlayout {
             grid-template-columns:  1fr 1fr 1fr;
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1500px) {
             grid-template-columns:  1fr 1fr 1fr 1fr;
         }
     }
@@ -139,42 +181,43 @@ section.cardlayout {
             text-decoration: line-through;
             font-style: italic;
         }
+    }
+}
 
-        div {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: .5rem;
-            margin: .5rem 0;
+section.individual {
 
-            p {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1rem;
-                background-color: var(--badges);
-                width: fit-content;
-                padding: .3rem .8rem;
-                height: 1.7rem;
-                border-radius: 1rem;
+    display: flex; 
+    flex-direction: column;
 
+    @media (min-width: 789px) {
+        flex-direction: row;
+        gap: 5vw;
+    }
 
-                &:nth-of-type(1) {
-                    width: 3rem;
-                }
+    section:nth-of-type(1) {
 
-                &:nth-of-type(2) {
+        display: flex;
+        width: 100%;
 
-                }
+        @media (min-width: 789px) {
+            flex-direction: column;
+            width: 45vw;
+        }
+    }
 
-                &:nth-of-type(3) {
-                    display: none;
+    img {
+        border-radius: 2rem;
+    }
 
-                    @media (min-width: 1000px) {
-                        display: flex;
-                    }
-                }
-            }
+    section:nth-of-type(2) {
+
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        @media (min-width: 789px) {
+
+            width: 45vw;
         }
     }
 }

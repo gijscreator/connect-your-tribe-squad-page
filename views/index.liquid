@@ -34,7 +34,7 @@
           {% endif %}
       </figure>
       <article>
-        <div>
+        <div class="badges">
           {% if age %}
           <p class="age">{{ age | strip_html }}</p>
           {% endif %}
@@ -56,7 +56,75 @@
   {% if persons.size > 8 %}
       <a href="/all" class="view-more">Bekijk alle studenten</a>
   {% endif %}
+</section>
 
+<h2>
+	Student van de maand 
+	<code>(30% korting)</code> 
+</h2>
+
+<section class="individual">
+
+    {% for person in persons limit: 1 %}
+
+    <section>
+        <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="mugshot">
+        {% if person.is_bold %}
+          <p>
+            Kaal
+          </p>
+          {% endif %}
+    </section>
+    
+    <section>
+        <!-- Calculate age with  liquid -->
+        {% assign dob = person.birthdate | date: "%Y-%m-%d" %}
+        {% assign current_year = "now" | date: "%Y" %}
+        {% assign birth_year = dob | date: "%Y" %}
+        {% assign age = current_year | minus: birth_year %}
+        {% assign now_month_day = "now" | date: "%m%d" | plus: 0 %}
+        {% assign dob_month_day = dob | date: "%m%d" | plus: 0 %}
+
+		<div class="badges">
+          {% if age %}
+          <p class="age">{{ age | strip_html }}</p>
+          {% endif %}
+          {% if person.residency %}
+          <p>{{ person.residency }}</p>
+          {% endif %}
+          {% if person.fav_property %}
+          <p>{{ person.fav_property | strip_html }}</p>
+          {% endif %}
+        </div>
+
+        <h3>{{ person.name | strip_html }}</h3>
+
+        <p>
+            2,95 
+            <span>12,95</span>
+        </p>
+
+        <p>
+            Hey! Ik ben <strong>{{ person.name }}</strong> (ook wel bekend als <em>{{ person.nickname }}</em>). 
+            Ik ben {{ age }} jaar oud en woon in het gezellige {{ person.residency }}. 
+            Mijn vibe is momenteel helemaal {{ person.vibe_emoji }}. 
+        </p>
+
+        <p>
+            In de <strong>{{ person.fav_season }}</strong> kun je me meestal vinden terwijl ik werk met 
+            mijn favoriete HTML-tag <code>{{ person.fav_tag | escape }}</code> of 
+            aan het puzzelen ben met <code>{{ person.fav_property }}</code>. 
+            Mijn favoriete onderdeel van het web? Absoluut de {{ person.fav_feature }}! 
+        </p>
+
+        <p>
+            <strong>Fun fact:</strong> Mijn favoriete dier is een {{ person.fav_animal }} en 
+            ik loop rond op maatje {{ person.shoe_size }}.
+        </p>
+
+    </section>
+	
+	{% endfor %}
 </section>
 </main>
 

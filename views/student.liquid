@@ -4,7 +4,7 @@
 
 <main class="student">
 
-<section class="details">
+<section class="individual">
     
     <section>
         <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="mugshot">
@@ -25,6 +25,19 @@
         {% assign dob_month_day = dob | date: "%m%d" | plus: 0 %}
 
         <h3>{{ person.name | strip_html }}</h3>
+
+        <div class="badges">
+          {% if age %}
+          <p class="age">{{ age | strip_html }}</p>
+          {% endif %}
+          {% if person.residency %}
+          <p>{{ person.residency }}</p>
+          {% endif %}
+          {% if person.fav_property %}
+          <p>{{ person.fav_property | strip_html }}</p>
+          {% endif %}
+        </div>
+
 
         <p>
             2,95 
