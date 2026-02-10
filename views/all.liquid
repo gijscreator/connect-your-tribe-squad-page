@@ -1,14 +1,14 @@
 {% render 'partials/head.liquid', title: 'Squad page'  %}
-<main>
+<main class="all">
 <h2>Shop hier onze studenten</h2>
 
 <!-- Section with all students -->
-<section>
+<section class="cardlayout">
   <ul>
 
     <!-- Liquid for loop for each person in the database -->
 
-    {% for person in persons limit: 8 %}
+    {% for person in persons %}
 
     <!-- Calculate age with liquid -->
     {% assign dob = person.birthdate | date: "%Y-%m-%d" %}

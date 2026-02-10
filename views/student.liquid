@@ -2,4 +2,56 @@
 
 <a href="/">Back</a>
 
+<main class="student">
+
+<section class="details">
+    
+    <section>
+        <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="mugshot">
+        {% if person.is_bold %}
+          <p>
+            Kaal
+          </p>
+          {% endif %}
+    </section>
+    
+    <section>
+        <!-- Calculate age with  liquid -->
+        {% assign dob = person.birthdate | date: "%Y-%m-%d" %}
+        {% assign current_year = "now" | date: "%Y" %}
+        {% assign birth_year = dob | date: "%Y" %}
+        {% assign age = current_year | minus: birth_year %}
+        {% assign now_month_day = "now" | date: "%m%d" | plus: 0 %}
+        {% assign dob_month_day = dob | date: "%m%d" | plus: 0 %}
+
+        <h3>{{ person.name | strip_html }}</h3>
+
+        <p>
+            2,95 
+            <span>12,95</span>
+        </p>
+
+        <p>
+            Hey! Ik ben <strong>{{ person.name }}</strong> (ook wel bekend als <em>{{ person.nickname }}</em>). 
+            Ik ben {{ age }} jaar oud en woon in het gezellige {{ person.residency }}. 
+            Mijn vibe is momenteel helemaal {{ person.vibe_emoji }}. 
+        </p>
+
+        <p>
+            In de <strong>{{ person.fav_season }}</strong> kun je me meestal vinden terwijl ik werk met 
+            mijn favoriete HTML-tag <code>{{ person.fav_tag | escape }}</code> of 
+            aan het puzzelen ben met <code>{{ person.fav_property }}</code>. 
+            Mijn favoriete onderdeel van het web? Absoluut de {{ person.fav_feature }}! 
+        </p>
+
+        <p>
+            <strong>Fun fact:</strong> Mijn favoriete dier is een {{ person.fav_animal }} en 
+            ik loop rond op maatje {{ person.shoe_size }}.
+        </p>
+
+    </section>
+</section>
+</main>
+
+
 {% render 'partials/foot.liquid', squads: squads %}

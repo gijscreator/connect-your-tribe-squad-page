@@ -1,9 +1,9 @@
 {% render 'partials/head.liquid', title: 'Squad page'  %}
-<main>
+<main class="home">
 <h2>Shop hier onze studenten</h2>
 
 <!-- Section with all students -->
-<section>
+<section class="cardlayout">
   <ul>
 
     <!-- Liquid for loop for each person in the database -->
@@ -26,7 +26,7 @@
     <!-- Individual student card --> 
     <li>
       <figure>
-          <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}?width=400"  width="400" height="300" alt="mugshot">
+          <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}  width="400" height="300" alt="mugshot">
           {% if person.is_bold %}
           <p>
             Kaal

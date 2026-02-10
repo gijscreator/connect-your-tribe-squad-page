@@ -87,31 +87,39 @@ app.post('/', async function (request, response) {
   response.redirect(303, '/')
 })
 
-app.get('/all/:role', async function (request, response) {
-  // 1. Build the query parameters cleanly
+app.get('/:roleSlug', async function (request, response) {
+  // 1. Map friendly URL names to the IDs from your API
+  const ROLE_MAP = {
+    'teachers': 1,
+    'leaders': 2,
+    'tribes': 3,
+    'students': 4,
+    'experts': 5,
+    'owners': 6,
+    'officers': 7
+  };
+
+  // 2. Build the query based on the ID found in the map
   const query = new URLSearchParams({
-    'filter[role][role_id]': request.params.role,
+    'filter[role][role_id]': ROLE_MAP[request.params.roleSlug],
     'filter[squads][squad_id][cohort]': '2526',
     'fields': '*,role.role_id.name,mugshot.id',
-    'sort': 'name' // Added sorting so the list is alphabetical
+    'sort': 'name'
   }).toString()
 
-  // 2. Fetch data
+  // 3. Fetch the data
   const apiResponse = await fetch(`https://fdnd.directus.app/items/person?${query}`)
   const personData = await apiResponse.json()
   
-  // 3. Extract the list of persons (fallback to empty array if data is missing)
+  // 4. Extract data and determine the display name
   const persons = personData.data || []
+  const roleName = persons[0]?.role[0]?.role_id?.name || request.params.roleSlug
 
-  // 4. Determine Role Name safely
-  // We check the first person's role name, otherwise capitalize the URL parameter
-  const roleName = persons[0]?.role[0]?.role_id?.name || `Role ${request.params.role}`
-
-  // 5. Render
+  // 5. Render using your existing all.liquid
   response.render('all.liquid', {
-    persons,
-    roleName,
-    squads: squadResponseJSON.data
+    persons: persons,
+    roleName: roleName,
+    squads: squadResponseJSON.data // Using the global squad data as in your example
   })
 })
 
