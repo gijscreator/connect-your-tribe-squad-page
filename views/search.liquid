@@ -1,0 +1,12 @@
+
+{% render 'partials/head.liquid', title: 'Squad page'  %}
+
+<main>
+{% if searchTerm %}
+    <p>Resultaten voor: "<strong>{{ searchTerm }}</strong>"</p>
+{% endif %}
+
+<!-- Section with all students -->
+{% include 'partials/cardlayout.liquid' %}
+
+</main>

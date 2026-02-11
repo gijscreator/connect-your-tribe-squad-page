@@ -1,148 +1,130 @@
-// Importeer het npm package Express (uit de door npm aangemaakte node_modules map)
-// Deze package is geïnstalleerd via `npm install`, en staat als 'dependency' in package.json
 import express from 'express'
+import { Liquid } from 'liquidjs'
 
-// Importeer de Liquid package (ook als dependency via npm geïnstalleerd)
-import { Liquid } from 'liquidjs';
-
-// Je kunt de volgende URLs uit onze API gebruiken:
-// - https://fdnd.directus.app/items/tribe
-// - https://fdnd.directus.app/items/squad
-// - https://fdnd.directus.app/items/person
-// En combineren met verschillende query parameters als filter, sort, search, etc.
-// Gebruik hiervoor de documentatie van https://directus.io/docs/guides/connect/query-parameters
-// En de oefeningen uit https://github.com/fdnd-task/connect-your-tribe-squad-page/blob/main/docs/squad-page-ontwerpen.md
-
-// Haal bijvoorbeeld alle eerstejaars squads van dit jaar uit de WHOIS API op (2025–2026)
-const params = {
-  'filter[cohort]': '2526',
-  'filter[tribe][name]': 'FDND Jaar 1'
-}
-const squadResponse = await fetch('https://fdnd.directus.app/items/squad?' + new URLSearchParams(params))
-
-// Lees van de response van die fetch het JSON object in, waar we iets mee kunnen doen
-const squadResponseJSON = await squadResponse.json()
-
-// Controleer eventueel de data in je console
-// (Let op: dit is _niet_ de console van je browser, maar van NodeJS, in je terminal)
-// console.log(squadResponseJSON)
-
-
-// Maak een nieuwe Express applicatie aan, waarin we de server configureren
 const app = express()
+const engine = new Liquid()
+const PORT = process.env.PORT || 8000
 
-// Gebruik de map 'public' voor statische bestanden (resources zoals CSS, JavaScript, afbeeldingen en fonts)
-// Bestanden in deze map kunnen dus door de browser gebruikt worden
+// --- Maps and Config ---
+const ROLE_MAP = {
+  'teachers': 1, 'leaders': 2, 'tribes': 3, 'students': 4,
+  'experts': 5, 'owners': 6, 'officers': 7
+}
+
+const SORT_MAP = {
+  'baldness': 'is_bold', 'a-z': 'name', 'shoe-size': 'shoe_size',
+  'season': 'fav_season', 'age': 'birthdate', 'fav-css': 'fav_property',
+  'nickname': 'nickname', 'git-handle': 'github_handle',
+  'fav-color': 'fav_color', 'residency': 'residency', 'z-a': '-name'
+}
+
+// Fetch squads once at startup
+const SQUAD_PARAMS = new URLSearchParams({ 'filter[cohort]': '2526', 'filter[tribe][name]': 'FDND Jaar 1' })
+const squadResponse = await fetch('https://fdnd.directus.app/items/squad?' + SQUAD_PARAMS)
+const squadResponseJSON = await squadResponse.json()
+const squadsData = squadResponseJSON.data
+
+// --- Middleware ---
 app.use(express.static('public'))
-
-// Stel Liquid in als 'view engine'
-const engine = new Liquid();
-app.engine('liquid', engine.express()); 
-
-// Stel de map met Liquid templates in
-// Let op: de browser kan deze bestanden niet rechtstreeks laden (zoals voorheen met HTML bestanden)
+app.use(express.urlencoded({ extended: true })) // Essential for reading POST data
+app.engine('liquid', engine.express())
 app.set('views', './views')
 
-// Zorg dat werken met request data (volgende week) makkelijker wordt
-app.use(express.urlencoded({extended: true}))
+function getSortField(querySort) {
+  return SORT_MAP[querySort] || 'name'
+}
 
+// --- ROUTES ---
 
-// Om Views weer te geven, heb je Routes nodig
-// Maak een GET route voor de index
-app.get('/', async function (request, response) {
-
-  // Haal alle personen uit de WHOIS API op, van dit jaar, gesorteerd op naam
-  const params = {
-    // Sorteer op naam
-    'sort': 'name',
-
-    // Geef aan welke data je per persoon wil terugkrijgen
+// homepagina
+app.get('/', async (request, response) => {
+  const params = new URLSearchParams({
+    'sort': getSortField(request.query.sort),
     'fields': '*,squads.*',
-
-    // Combineer meerdere filters
     'filter[squads][squad_id][tribe][name]': 'FDND Jaar 1',
-    // Filter eventueel alleen op een bepaalde squad
-    // 'filter[squads][squad_id][name]': '1I',
-    // 'filter[squads][squad_id][name]': '1J',
     'filter[squads][squad_id][cohort]': '2526'
+  })
+  const personResponse = await fetch('https://fdnd.directus.app/items/person/?' + params)
+  const personData = await personResponse.json()
+
+  response.render('index.liquid', { persons: personData.data, squads: squadsData })
+})
+
+// convert de zoekmethode naar de /search voor betere url structuur
+
+app.post('/search', (request, response) => {
+  const searchTerm = request.body.search
+  if (searchTerm) {
+    response.redirect(303, `/search/${encodeURIComponent(searchTerm)}`)
+  } else {
+    response.redirect(303, '/')
   }
-  const personResponse = await fetch('https://fdnd.directus.app/items/person/?' + new URLSearchParams(params))
-
-  // En haal daarvan de JSON op
-  const personResponseJSON = await personResponse.json()
-
-  // personResponseJSON bevat gegevens van alle personen uit alle squads van dit jaar
-  // Toon eventueel alle data in de console
-  // console.log(personResponseJSON)
-
-  // Render index.liquid uit de views map en geef de opgehaalde data mee als variabele, genaamd persons
-  // Geef ook de eerder opgehaalde squad data mee aan de view
-  response.render('index.liquid', {persons: personResponseJSON.data, squads: squadResponseJSON.data})
 })
 
-// Maak een POST route voor de index; hiermee kun je bijvoorbeeld formulieren afvangen
-app.post('/', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van POST, redirect naar GET op /
-  response.redirect(303, '/')
-})
+// vangt het formulier op
+app.get('/search/:searchTerm', async (request, response) => {
+  const searchTerm = request.params.searchTerm
 
-app.get('/:roleSlug', async function (request, response) {
-  // 1. Map friendly URL names to the IDs from your API
-  const ROLE_MAP = {
-    'teachers': 1,
-    'leaders': 2,
-    'tribes': 3,
-    'students': 4,
-    'experts': 5,
-    'owners': 6,
-    'officers': 7
-  };
+  const params = new URLSearchParams({
+    'fields': '*,squads.*',
+    'filter[squads][squad_id][cohort]': '2526'
+  })
 
-  // 2. Build the query based on the ID found in the map
-  const query = new URLSearchParams({
-    'filter[role][role_id]': ROLE_MAP[request.params.roleSlug],
-    'filter[squads][squad_id][cohort]': '2526',
-    'fields': '*,role.role_id.name,mugshot',
-    'sort': 'name'
-  }).toString()
+if (searchTerm) {
+    // Basic Info
+    params.append('filter[_or][0][name][_icontains]', searchTerm)
+    params.append('filter[_or][1][nickname][_icontains]', searchTerm)
+    params.append('filter[_or][2][github_handle][_icontains]', searchTerm)
+    
+    // Location & Preferences
+    params.append('filter[_or][3][residency][_icontains]', searchTerm)
+    params.append('filter[_or][4][fav_season][_icontains]', searchTerm)
+    params.append('filter[_or][5][fav_animal][_icontains]', searchTerm)
+    
+    // Tech & Vibe
+    params.append('filter[_or][6][fav_property][_icontains]', searchTerm) // Matches "flex"
+    params.append('filter[_or][7][fav_feature][_icontains]', searchTerm)  // Matches "DOM"
+    params.append('filter[_or][8][vibe_emoji][_icontains]', searchTerm)   // Matches "🤑"
+    
+    // The "Hidden" Data (JSON string field)
+    params.append('filter[_or][9][custom][_icontains]', searchTerm)     // Matches "Geld" or "figma"
+  }
 
-  // 3. Fetch the data
-  const apiResponse = await fetch(`https://fdnd.directus.app/items/person?${query}`)
+  const apiResponse = await fetch('https://fdnd.directus.app/items/person?' + params)
   const personData = await apiResponse.json()
-  
-  // 4. Extract data and determine the display name
-  const persons = personData.data || []
-  const roleName = persons[0]?.role[0]?.role_id?.name || request.params.roleSlug
 
-  // 5. Render using your existing all.liquid
-  response.render('all.liquid', {
-    persons: persons,
-    roleName: roleName,
-    squads: squadResponseJSON.data // Using the global squad data as in your example
+  response.render('search.liquid', {
+    persons: personData.data || [],
+    searchTerm: searchTerm,
+    squads: squadsData
   })
 })
 
-// Maak een GET route voor een detailpagina met een route parameter, id
-// Zie de documentatie van Express voor meer info: https://expressjs.com/en/guide/routing.html#route-parameters
-app.get('/student/:id', async function (request, response) {
-  // Gebruik de request parameter id en haal de juiste persoon uit de WHOIS API op
+app.get('/student/:id', async (request, response) => {
   const personDetailResponse = await fetch('https://fdnd.directus.app/items/person/' + request.params.id)
-  // En haal daarvan de JSON op
   const personDetailResponseJSON = await personDetailResponse.json()
-  
-  // Render student.liquid uit de views map en geef de opgehaalde data mee als variable, genaamd person
-  // Geef ook de eerder opgehaalde squad data mee aan de view
-  response.render('student.liquid', {person: personDetailResponseJSON.data, squads: squadResponseJSON.data})
+  response.render('student.liquid', { person: personDetailResponseJSON.data, squads: squadsData })
 })
 
+// Student or teacher 
+app.get('/:roleSlug', async (request, response, next) => {
+  const roleId = ROLE_MAP[request.params.roleSlug]
+  if (!roleId) return next() 
 
+  const params = new URLSearchParams({
+    'filter[role][role_id]': roleId,
+    'filter[squads][squad_id][cohort]': '2526',
+    'fields': '*,role.role_id.name,mugshot,squads.*',
+    'sort': getSortField(request.query.sort),
+    'limit': -1
+  })
 
-// Stel het poortnummer in waar express op moet gaan luisteren
-app.set('port', process.env.PORT || 8000)
+  const apiResponse = await fetch('https://fdnd.directus.app/items/person?' + params)
+  const personData = await apiResponse.json()
+  const persons = personData.data || []
+  const roleName = persons[0]?.role[0]?.role_id?.name || request.params.roleSlug
 
-// Start express op, haal daarbij het zojuist ingestelde poortnummer op
-app.listen(app.get('port'), function () {
-  // Toon een bericht in de console en geef het poortnummer door
-  console.log(`Application started on http://localhost:${app.get('port')}`)
+  response.render('all.liquid', { persons: persons, roleName: roleName, squads: squadsData })
 })
+
+app.listen(PORT, () => console.log(`App: http://localhost:${PORT}`))

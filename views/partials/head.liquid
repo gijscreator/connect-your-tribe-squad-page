@@ -14,11 +14,8 @@
       <a href="/">
         <img src="/assets/logo.png" alt="fdnd shop logo">
       </a>
-      <nav>
-        <a href="/search">Search</a>
-      </nav>
-      <form action="search">
-        <input type="search" placeholder="Zoek hier naar iemand (koop)......">
+      <form action="/search" method="POST">
+        <input type="search" name="search" placeholder="Zoek hier naar iemand (koop)......" value="{{ q }}">
       </form>
       <a href="/cart">
         <svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
