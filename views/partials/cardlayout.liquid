@@ -5,7 +5,7 @@
     {% for person in persons %}
     {% if person.mugshot %}
     {% include 'partials/calc.liquid' %}
-    {% include 'partials/seasons.liquid' %}
+    {% include 'partials/vars.liquid' %}
     <!-- Individual student card --> 
     <li class="{{ person.fav_season }}">
     <figure>
@@ -109,16 +109,11 @@
             {% endif %}
         </div>
         <h3>{{ person.name | strip_html }}</h3>
-        {% comment %} <p class="price"> {{randomNumber}},-
-            <span>92,5</span>
-        </p> {% endcomment %}
 
         <!-- linkje met alleen de voornaam -->
         <a href="/student/{{ person.id }}">Meer over {{ person.name | split: " " | first}}</a>
-
-        {% if person.fav_season == "Zomer" %}
-
-        {% endif %}
+        <audio src="/assets/animalsound.mp3" class="animalsound"></audio>
+        <img class="favanimal" src="/assets/{{ person.fav_animal | downcase }}.svg" alt="">
 
     </article>
     </li>
