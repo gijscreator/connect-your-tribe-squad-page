@@ -11,18 +11,15 @@
     
     <section>   
         <div class="badges">
-        {% if age %}
-            <p class="age">{{ age }}</p>
-        {% endif %}
-        {% if person.residency %}
-            <p>{{ person.residency }}</p>
+            {% if age %}
+                <p class="age">{{ age }}</p>
             {% endif %}
-        {% if person.fav_property %}
-            <p>{{ person.fav_property | strip_html }}</p>
-        {% endif %}
-
-
-
+            {% if person.residency %}
+                <p>{{ person.residency }}</p>
+                {% endif %}
+            {% if person.fav_property %}
+                <p>{{ person.fav_property | strip_html }}</p>
+            {% endif %}
         </div>
     
         <h3>{{ person.name | strip_html }}</h3>
