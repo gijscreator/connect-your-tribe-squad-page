@@ -22,41 +22,60 @@ header {
     	}
 	}
 
-	form {
-		display: flex;
-    	justify-content: center; 
-    	align-items: center;
-		position: fixed;
-		top: 10dvh;
-		left: 0;
-		width: 100vw;
-		height: 5dvh;
-		background-color: var(--primary-fdnd);
+    form {
+        
+        --inline-padding: 1rem;
+        --icon-size: 18px;
+    
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        width: 80vw;
+        max-width: 350px;
 
-		@media (min-width: 700px) {
-			position: static;
-		}
+        label {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 50px;
+            border: 1px solid #eee; /* Optional: adds definition */
+            padding: 0.5rem var(--inline-padding);
+            transition: box-shadow 0.2s ease;
 
-		input[type="search"] {
-			width: 70vw;
-			max-width: 300px;
-			height: 4dvh;
-			min-height: 3rem;
-			padding-left: .7rem; 
-			
+            &:focus-within {
+                box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+            }
 
-			&::-webkit-search-decoration {
+            .search-icon {
+                width: var(--icon-size);
+                height: var(--icon-size);
+                color: #666;
+                pointer-events: none;
+            }
 
-				transform: scale(1.5); 
-				margin-right: 10px;
-			}
-			&::-webkit-search-cancel-button {
+            input {
+                width: 100%;
+                padding: 0.6rem 0.8rem;
+                background: none;
+                border: none;
+                color: #333;
 
-				transform: scale(1.5); 
-				margin-right: 10px;
-			}
-		}
-	}
+            &:focus {
+                outline: none;
+            }
+
+            &::placeholder {
+                color: #999;
+            }
+
+            &:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0px 1000px white inset;
+            }
+        }
+    }
+}
 
 	svg {
 		width: 2rem;
