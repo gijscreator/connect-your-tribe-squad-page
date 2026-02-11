@@ -1,4 +1,7 @@
 {% render 'partials/head.liquid', title: 'Squad page'  %}
+
+
+
 <main class="all">
 <h2>Shop hier onze studenten</h2>
 
@@ -8,7 +11,7 @@
 
     <!-- Liquid for loop for each person in the database -->
     {% for person in persons %}
-
+    {% include 'partials/calc.liquid' %}
     <!-- Individual student card --> 
     <li>
       <figure>
@@ -23,7 +26,6 @@
       </figure>
       <article>
         <div class="badges">
-          {% include 'partials/calc_age.liquid' %}
           {% if age %}
           <p class="age">{{ age | strip_html }}</p>
           {% endif %}
@@ -35,7 +37,9 @@
           {% endif %}
         </div>
         <h3>{{ person.name | strip_html }}</h3>
-        <p>2,95 <span>12,95</span> </p>
+        <p class="price"> {{randomNumber}},-
+            <span>92,5</span>
+        </p>
         <a href="/student/{{ person.id }}">Meer over {{ person.name }}</a>
       </article>
     </li>

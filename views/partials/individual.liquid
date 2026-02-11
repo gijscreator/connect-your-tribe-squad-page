@@ -1,23 +1,20 @@
+{% include 'partials/calc.liquid' %}
+
 <section class="individual">
     
-    <section>
+    <article>
         <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="mugshot">
         {% if person.is_bold %}
           <p>
             Kaal
           </p>
           {% endif %}
-    </section>
+    </article>
     
-    <section>
-
-        <h3>{{ person.name | strip_html }}</h3>
-
-        {% include 'partials/calc_age.liquid' %}
-
+    <section>   
         <div class="badges">
           {% if age %}
-          <p class="age">{{ age | strip_html }}</p>
+          <p class="age">{{ age }}</p>
           {% endif %}
           {% if person.residency %}
           <p>{{ person.residency }}</p>
@@ -26,11 +23,11 @@
           <p>{{ person.fav_property | strip_html }}</p>
           {% endif %}
         </div>
+    
+        <h3>{{ person.name | strip_html }}</h3>
 
-
-        <p>
-            2,95 
-            <span>12,95</span>
+        <p class="price"> {{randomNumber}},-
+            <span>92,5</span>
         </p>
 
         <p>
