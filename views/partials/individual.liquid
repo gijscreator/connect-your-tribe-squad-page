@@ -4,24 +4,25 @@
     
     <article>
         <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="mugshot">
-        {% if person.is_bold %}
-          <p>
-            Kaal
-          </p>
-          {% endif %}
+            {% comment %} <p style="border-radius: {{ fav_border_radius }}">
+            Favo border
+            </p> {% endcomment %}
     </article>
     
     <section>   
         <div class="badges">
-          {% if age %}
-          <p class="age">{{ age }}</p>
-          {% endif %}
-          {% if person.residency %}
-          <p>{{ person.residency }}</p>
-          {% endif %}
-          {% if person.fav_property %}
-          <p>{{ person.fav_property | strip_html }}</p>
-          {% endif %}
+        {% if age %}
+            <p class="age">{{ age }}</p>
+        {% endif %}
+        {% if person.residency %}
+            <p>{{ person.residency }}</p>
+            {% endif %}
+        {% if person.fav_property %}
+            <p>{{ person.fav_property | strip_html }}</p>
+        {% endif %}
+
+
+
         </div>
     
         <h3>{{ person.name | strip_html }}</h3>

@@ -103,7 +103,7 @@ app.get('/:roleSlug', async function (request, response) {
   const query = new URLSearchParams({
     'filter[role][role_id]': ROLE_MAP[request.params.roleSlug],
     'filter[squads][squad_id][cohort]': '2526',
-    'fields': '*,role.role_id.name,mugshot.id',
+    'fields': '*,role.role_id.name,mugshot',
     'sort': 'name'
   }).toString()
 

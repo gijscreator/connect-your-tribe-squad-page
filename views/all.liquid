@@ -1,57 +1,11 @@
 {% render 'partials/head.liquid', title: 'Squad page'  %}
 
-
-
 <main class="all">
 <h2>Shop hier onze studenten</h2>
 
 <!-- Section with all students -->
-<section class="cardlayout">
-  <ul>
+{% include 'partials/cardlayout.liquid' %}
 
-    <!-- Liquid for loop for each person in the database -->
-    {% for person in persons %}
-    {% include 'partials/calc.liquid' %}
-    <!-- Individual student card --> 
-    <li>
-      <figure>
-
-        <img src="https://fdnd.directus.app/assets/{{ person.mugshot.id }}" alt="">
-
-        {% if person.is_bold %}
-        <p>
-        Kaal
-        </p>
-        {% endif %}
-      </figure>
-      <article>
-        <div class="badges">
-          {% if age %}
-          <p class="age">{{ age | strip_html }}</p>
-          {% endif %}
-          {% if person.residency %}
-          <p>{{ person.residency }}</p>
-          {% endif %}
-          {% if person.fav_property %}
-          <p>{{ person.fav_property | strip_html }}</p>
-          {% endif %}
-        </div>
-        <h3>{{ person.name | strip_html }}</h3>
-        <p class="price"> {{randomNumber}},-
-            <span>92,5</span>
-        </p>
-        <a href="/student/{{ person.id }}">Meer over {{ person.name }}</a>
-      </article>
-    </li>
-
-    {% endfor %}
-  </ul>
-
-  {% if persons.size > 8 %}
-      <a href="/all" class="view-more">Bekijk alle studenten</a>
-  {% endif %}
-
-</section>
 </main>
 
 {% render 'partials/foot.liquid', squads: squads %}
