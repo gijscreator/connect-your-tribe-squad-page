@@ -91,7 +91,7 @@ main {
 	padding: 1rem;
 
     @media (min-width: 789px) {
-        padding: 5rem;
+        padding: 3rem;
     }
 }
 
@@ -102,13 +102,13 @@ main.home {
 		margin: 2rem 0;
 	}
 
-	.view-more {
+	a:last-child {
 		display: flex;
 		font-size: 1rem;
 		text-decoration: none;
 		background-color: var(--secondary);
 		padding: .5rem 1rem;
-		color: white;
+        color: black;
 		border-radius: 2rem;
 		width: 80vw;
 		max-width: 15rem;
@@ -123,7 +123,79 @@ main.all {
 
 /* student page individual main styles */
 main.student {
+    section:nth-of-type(2) {
 
+        article {
+            display: flex;
+            background-color: black;
+            position: relative;
+            color: white;
+
+            img {
+                opacity: .5;
+                
+            }
+
+            div:nth-of-type(1) {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                padding: 1rem;
+            }
+
+            h3 {
+                z-index: 2;
+            }
+
+            p {
+                width: 60%;
+                margin: 1rem 0;
+                font-weight: 700;
+                font-size: 1rem;
+                display: none;
+
+                @media (min-width: 700px) {
+                    display: inline;
+                }
+
+                &:nth-of-type(2) {
+                    display: inline;
+                    width: 80%;
+
+                    @media (min-width: 700px) {
+                        display: none;
+                    }
+                    
+                }
+            }
+
+            a {
+                display: flex;
+                text-decoration: none;
+                background-color: var(--secondary);
+                color: white;
+                width: 50vw;
+                padding: 1rem 1rem;
+                border-radius: 25px;
+                box-shadow: black 5px 5px 5px;
+
+                &::after {
+                    position: absolute;
+                    bottom: 1rem; 
+                    left: 9rem;
+                    content: url(data:image/svg+xml,%3Csvg%20width%3D%2223%22%20height%3D%2225%22%20viewBox%3D%220%200%2023%2025%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M4.79175%2012.5H18.2084M18.2084%2012.5L11.5001%205.20837M18.2084%2012.5L11.5001%2019.7917%22%20stroke%3D%22white%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
+
+                    @media (min-width: 700px) {
+                        left: 10rem;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* badges for all pages */
@@ -174,25 +246,32 @@ section.cardlayout {
         gap: 2vw;
 
         @media (min-width: 550px) {
-            grid-template-columns:  1fr 1fr;
+
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         @media (min-width: 789px) {
-            grid-template-columns:  1fr 1fr 1fr;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
-		@media (min-width: 1700px) {
-            grid-template-columns:  1fr 1fr 1fr 1fr;
+
+        @media (min-width: 1700px) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
     }
 
     li {
         display: flex;
         flex-direction: column;
-        width: 100%;
         border: 2px var(--black) solid;
+        width: 95%;
         border-radius: 2rem;
         box-shadow: var(--black) .3rem .3rem 0rem;
         margin-bottom: 1rem;
+
+        @media (min-width: 550px) {
+
+            width: 100%;
+        }
 
         h3 {
             margin: .5rem .5rem;
@@ -290,7 +369,7 @@ section.cardlayout {
                 &::after {
                     position: absolute;
                     bottom: 1rem; 
-                    left: 9rem;
+                    left: 10rem;
                     content: url(data:image/svg+xml,%3Csvg%20width%3D%2223%22%20height%3D%2225%22%20viewBox%3D%220%200%2023%2025%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M4.79175%2012.5H18.2084M18.2084%2012.5L11.5001%205.20837M18.2084%2012.5L11.5001%2019.7917%22%20stroke%3D%22white%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
 
                     @media (min-width: 700px) {
@@ -362,7 +441,7 @@ section.cardlayout {
                 &::after {
                     position: absolute;
                     bottom: 1.7rem; 
-                    left: 12rem;
+                    left: 13rem;
                     content: url(data:image/svg+xml,%3Csvg%20width%3D%2223%22%20height%3D%2225%22%20viewBox%3D%220%200%2023%2025%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M4.79175%2012.5H18.2084M18.2084%2012.5L11.5001%205.20837M18.2084%2012.5L11.5001%2019.7917%22%20stroke%3D%22white%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
 
                     @media (min-width: 700px) {
@@ -399,7 +478,7 @@ section.cardlayout {
 
                 &::after {
                     position: absolute;
-                    bottom: 1.3rem; 
+                    bottom: 1.7rem; 
                     left: 12rem;
                     content: url(data:image/svg+xml,%3Csvg%20width%3D%2223%22%20height%3D%2225%22%20viewBox%3D%220%200%2023%2025%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M4.79175%2012.5H18.2084M18.2084%2012.5L11.5001%205.20837M18.2084%2012.5L11.5001%2019.7917%22%20stroke%3D%22white%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E);
 

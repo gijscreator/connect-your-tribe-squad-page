@@ -51,6 +51,7 @@ h5, h6 {
 
 p, a, span {
 	font-size: var(--paragraph);
+    font-weight: 400;
 }
 
 img, video {

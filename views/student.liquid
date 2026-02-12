@@ -9,7 +9,31 @@
 
 <section>
     <h2>Mijn favoriete seizoen</h2>
-    <img src="/assets/{{ person.fav_season }}.jpg" alt="">
+    <article>
+        <img src="/assets/{{ person.fav_season }}.webp" alt="">
+        <div>  
+            <h3>{{ person.fav_season }}</h3>
+
+            {% if person.fav_season == "Zomer" %}
+                <p class="desktop-only">De Eiffeltoren groeit in de zomer! Door de hitte zet het ijzer van de constructie uit. Hierdoor kan de toren op een bloedhete dag wel 15 centimeter groter zijn dan in de winter.</p>
+                <p class="mobile-only">Wist je dat de Eiffeltoren in de zomer 15 cm groter kan worden door de hitte?</p>
+
+            {% elsif person.fav_season == "Lente" %}
+                <p class="desktop-only">Wist je dat de lente op het noordelijk halfrond steeds vroeger begint? Door de opwarming van de aarde beginnen planten gemiddeld twee tot drie dagen eerder te bloeien per decennium. De natuur heeft dus een tikkeltje meer haast dan vroeger!</p>
+                <p class="mobile-only">De lente begint steeds vroeger: planten bloeien nu gemiddeld al dagen eerder dan vroeger.</p>
+
+            {% elsif person.fav_season == "Herfst" %}
+                <p class="desktop-only">De prachtige kleuren die we zien (geel, oranje, rood) zitten het hele jaar al in de bladeren, maar ze zijn "verstopt". In de zomer overheerst het groene bladgroen (chlorofyl). Zodra de dagen korter worden, breekt dat groen af en komen de verborgen kleuren eindelijk tevoorschijn.</p>
+                <p class="mobile-only">Herfstkleuren zitten het hele jaar al in het blad, maar worden pas zichtbaar als het groen afbreekt.</p>
+
+            {% elsif person.fav_season == "Winter" %}
+                <p class="desktop-only">Geen twee sneeuwvlokken zijn hetzelfde, maar ze hebben wel één ding gemeen: ze hebben bijna altijd zes zijden. Dit komt door de manier waarop watermoleculen zich aan elkaar hechten wanneer ze bevriezen tot ijskristallen.</p>
+                <p class="mobile-only">Sneeuwvlokken zijn uniek, maar hebben bijna altijd zes zijden door de vorm van watermoleculen.</p>
+            {% endif %}
+
+            <a href="/search/{{ person.fav_season }}" target="_blank">Alle liefhebbers van de {{ person.fav_season }}</a>
+        </div>
+    </article>
 </section>
 </main>
 
