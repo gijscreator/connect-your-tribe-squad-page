@@ -29,7 +29,7 @@
         </p>
 
         <p>
-            Hey! Ik ben <strong>{{ person.name }}</strong> (ook wel bekend als <em>{{ person.nickname }}</em>). 
+            Hey! Ik ben <strong>{{ person.name }}</strong> (ook wel bekend als <em>{{ person.nickname | strip_html}}</em>). 
             Ik ben {{ age }} jaar oud en woon in het gezellige {{ person.residency }}. 
             Mijn vibe is momenteel helemaal {{ person.vibe_emoji }}. 
         </p>

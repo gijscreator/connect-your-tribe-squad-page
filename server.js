@@ -69,7 +69,9 @@ app.post('/search', (req, res) => {
 app.get('/search/:searchTerm', async (req, res) => {
   const { searchTerm } = req.params
   
-  // Use a cleaner object for the OR filter
+  // --- The Easter Egg Logic ---
+  const isEasterEgg = searchTerm.toLowerCase() === 'koop'
+  
   const searchFields = [
     'name', 'nickname', 'github_handle', 'residency', 
     'fav_season', 'fav_animal', 'fav_property', 'vibe_emoji', 'custom'
@@ -81,7 +83,11 @@ app.get('/search/:searchTerm', async (req, res) => {
   })
 
   const persons = await fetchItems('person', query)
-  res.render('search.liquid', { persons, searchTerm })
+
+  // Choose the template based on the search term
+  const template = isEasterEgg ? 'koop.liquid' : 'search.liquid'
+  
+  res.render(template, { persons, searchTerm })
 })
 
 app.get('/student/:id', async (req, res) => {
