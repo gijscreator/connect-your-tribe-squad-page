@@ -1,5 +1,6 @@
 {% render 'partials/head.liquid', title: person.name %}
 {% include 'partials/calc.liquid' %}
+{% include 'partials/vars.liquid' %}
 
 <a href="/">Back</a>
 
@@ -100,6 +101,18 @@
 
     </article>
 </section>
+
+{% comment %} bron: https://developer.spotify.com/documentation/embeds/tutorials/creating-an-embed {% endcomment %}
+<iframe
+    style="border-radius:2rem"
+    src="https://open.spotify.com/embed/track/{{ track_id | default: '4PTG3Z6ehGkBFwjybzWkR8' }}?utm_source=generator"
+    width="100%"
+    height="352"
+    frameBorder="0"
+    allowfullscreen=""
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy">
+</iframe>
 
 {% comment %} Favorite animal {% endcomment %}
 <section>

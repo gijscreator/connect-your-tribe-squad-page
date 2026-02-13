@@ -239,6 +239,10 @@ main.student {
             }
         }
     }
+
+    iframe {
+        margin-top: 3rem;4
+    }
     
     embed {
         margin: 4rem 0;
