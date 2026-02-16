@@ -1,0 +1,29 @@
+{% render 'partials/head.liquid', title: 'Squad page' %}
+{% include 'partials/calc.liquid' %}
+
+<main>
+    
+    {% comment %} 
+        Section with all persons in your cart
+    {%  endcomment %}
+    <section>
+        <ul>
+            {% for person in cart_items %}
+                <li>
+                    <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="">
+                    <h3>Koop reynders</h3>     
+                    <p class="price"> {{randomNumber}},-
+                        <span>92,5</span>
+                    </p>
+                    <button>
+                        
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+</main>
+<aside>
+
+</aside>
