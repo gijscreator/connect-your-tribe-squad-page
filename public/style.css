@@ -258,6 +258,57 @@ main.search {
     }
 }
 
+body.cart {
+    display: flex;
+    flex-wrap: wrap;
+
+    header {
+        flex: 0 0 100%;
+    }
+}
+
+main.cart {
+    display: flex;
+    flex-direction: row;
+    flex: 3;
+
+    @media (min-width: 890px) {
+        width: 60vw;
+    }
+
+    section {
+
+        img {
+            border-radius: 1rem 0 0 1rem;
+            width: 20%;
+            height: auto;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            justify-content: flex-start;
+            border-radius: 1rem;
+            border: 2px solid black;
+        }
+    }
+}
+
+aside.cart {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    background-color: purple;
+}
+
 /* badges for all pages */
 div.badges {
 
@@ -297,7 +348,7 @@ div.badges {
     }
 }
 
-/* card design universial */
+/* card design universal */
 section.cardlayout {
 
     ul {
@@ -609,7 +660,7 @@ section.cardlayout {
     }
 }
 
-/* individual design universial */
+/* individual design universal */
 section.individual {
 
     display: flex; 

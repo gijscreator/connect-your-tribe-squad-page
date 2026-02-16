@@ -52,8 +52,14 @@ app.locals.squads = squadsData
 // helper for sorting
 const getSortField = (querySort) => SORT_MAP[querySort] || 'name'
 
+
+// define cart items (default = empty)
+
+let squadCart = [];
+
 // all routes 
 
+// home page
 app.get('/', async (request, response) => {
   const persons = await fetchItems('person', {
     'sort': getSortField(request.query.sort),
@@ -62,13 +68,49 @@ app.get('/', async (request, response) => {
   response.render('index.liquid', { persons })
 })
 
+// add to cart post function
+app.post('/add-to-cart', (request, response) => {
+  const personId = request.body.id;
+  
+  // Only add if it's not already in the cart
+  if (!squadCart.includes(personId)) {
+    squadCart.push(personId);
+  }
+  
+  // Redirect back to the /cart page when adding was succesful
+  response.redirect('/cart');
+});
+
+// remove from cart post function
+app.post('/remove-from-cart', (request, response) => {
+  const personId = request.body.id;
+
+  // 1. Remove the person from the array
+  squadCart = squadCart.filter(id => id !== personId);
+
+  // 2. Decide where to go:
+  if (squadCart.length === 0) {
+    // If no one is left, go home
+    response.redirect('/');
+  } else {
+    // If people are still there, stay on the cart page
+    response.redirect('/cart');
+  }
+});
+
 app.get('/cart', async (request, response) => {
-  const persons = await fetchItems('person', {
-    'sort': getSortField(request.query.sort),
-    'filter[squads][squad_id][tribe][name]': 'FDND Jaar 1'
-  })
-  response.render('cart.liquid', { persons })
-})
+  // If the cart is empty, just render an empty list
+  if (squadCart.length === 0) {
+    return response.render('cart.liquid', { cart_items: [] });
+  }
+
+  // Filter Directus to only give us people in our squadCart array
+  const cart_items = await fetchItems('person', {
+    'filter[id][_in]': squadCart.join(',')
+  });
+
+  response.render('cart.liquid', { cart_items });
+});
 
 app.post('/search', (request, response) => {
   const searchTerm = request.body.search?.trim()

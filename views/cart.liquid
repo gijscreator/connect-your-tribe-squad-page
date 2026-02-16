@@ -1,29 +1,33 @@
-{% render 'partials/head.liquid', title: 'Squad page' %}
-{% include 'partials/calc.liquid' %}
+{% render 'partials/head_cart.liquid', title: 'Squad page' %}
 
-<main>
+
+<main class="cart">
     
     {% comment %} 
         Section with all persons in your cart
     {%  endcomment %}
     <section>
+        <h2>Mijn winkelmandje</h2>
         <ul>
             {% for person in cart_items %}
+                {% include 'partials/calc.liquid' %}
                 <li>
                     <img src="https://fdnd.directus.app/assets/{{ person.mugshot }}"  width="400" height="300" alt="">
-                    <h3>Koop reynders</h3>     
+                    <h3>{{ person.name }}</h3>     
                     <p class="price"> {{randomNumber}},-
                         <span>92,5</span>
                     </p>
-                    <button>
-                        
-                    </button>
+                    <form action="/remove-from-cart" method="POST">
+                        <input type="hidden" name="id" value="{{ person.id }}">
+                        <button type="submit">{{ person.name | split: " " | first}} Uit mijn winkelmandje </button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
     </section>
 
 </main>
-<aside>
 
+<aside class="cart">
+    <p>Totaal</p>
 </aside>
