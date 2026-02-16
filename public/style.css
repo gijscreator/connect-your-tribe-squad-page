@@ -86,7 +86,7 @@ header {
 }
 
 /* Global main styles */
-main {
+main:not(.cart) {
 	margin-top: 3dvh;
 	padding: 1rem;
 
@@ -272,10 +272,6 @@ main.cart {
     flex-direction: row;
     flex: 3;
 
-    @media (min-width: 890px) {
-        width: 60vw;
-    }
-
     section {
 
         img {
@@ -297,8 +293,16 @@ main.cart {
             gap: 2rem;
             justify-content: flex-start;
             border-radius: 1rem;
-            border: 2px solid black;
+            border: 4px solid black;
         }
+    }
+}
+
+main.fof {
+
+    img {
+        width: 100vw;
+        height: auto;
     }
 }
 

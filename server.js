@@ -97,7 +97,7 @@ app.post('/remove-from-cart', (request, response) => {
     response.redirect('/cart');
   }
 });
-
+ 
 app.get('/cart', async (request, response) => {
   // If the cart is empty, just render an empty list
   if (squadCart.length === 0) {
@@ -160,5 +160,12 @@ app.get('/:roleSlug', async (request, response, next) => {
   const roleName = persons[0]?.role?.[0]?.role_id?.name || request.params.roleSlug
   response.render('all.liquid', { persons, roleName })
 })
+
+// 404 route
+app.use((request, response) => {
+  response.status(404).render('404.liquid', { 
+    path: request.path 
+  });
+});
 
 app.listen(PORT, () => console.log(`App: http://localhost:${PORT}`))
