@@ -298,11 +298,26 @@ main.cart {
     }
 }
 
+/* 404 page */
 main.fof {
 
     img {
         width: 100vw;
         height: auto;
+    }
+}
+
+main.berichten {
+    ul {
+        animation-name: name;
+        animation-duration: 1s;
+        transition: all .3s ease;
+
+        li {
+            p {
+                
+            }
+        }
     }
 }
 
@@ -825,6 +840,3 @@ section.individual {
         opacity: 0.25;
     }
 }
-
-
-

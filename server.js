@@ -57,6 +57,9 @@ const getSortField = (querySort) => SORT_MAP[querySort] || 'name'
 
 let squadCart = [];
 
+// define message items (default = empty)
+let messages = ["test, test"];
+
 // all routes 
 
 // home page
@@ -97,7 +100,45 @@ app.post('/remove-from-cart', (request, response) => {
     response.redirect('/cart');
   }
 });
- 
+
+app.get('/berichten', async function (request, response) {
+
+  const params = {
+    'filter[for]': 'Team Happy',
+  }
+  
+  // Maak hiermee de URL aan, zoals we dat ook in de browser deden
+  const apiURL = 'https://fdnd.directus.app/items/messages?' + new URLSearchParams(params)
+  const messagesResponse = await fetch(apiURL)
+  
+  // Zet de JSON daarvan om naar een object
+  const messagesResponseJSON = await messagesResponse.json()
+  
+  // Die we vervolgens doorgeven aan onze view
+  response.render('messages.liquid', {
+    messages: messagesResponseJSON.data
+  })
+})
+
+app.post('/berichten', async function (request, response) {
+  // data naar de api
+  await fetch('https://fdnd.directus.app/items/messages', {
+    method: 'POST',
+
+    body: JSON.stringify({
+      for: 'Team Happy',
+      text: request.body.message,
+      from: request.body.from
+    }),
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+
+  // redirect to messages 
+  response.redirect(303, '/berichten')
+})
+
 app.get('/cart', async (request, response) => {
   // If the cart is empty, just render an empty list
   if (squadCart.length === 0) {
